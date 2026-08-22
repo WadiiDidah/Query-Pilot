@@ -6,15 +6,7 @@ Application Angular + Spring Boot qui transforme des questions en langage nature
 
 Angular → Spring Boot → LLM API → validation SQL → PostgreSQL
 
-## État actuel
 
-- Spring Boot initialisé
-- PostgreSQL via Docker Compose
-- endpoint `POST /api/queries`
-- validation des requêtes entrantes
-- exécution SQL de test avec `JdbcTemplate`
-- structure prête pour le futur `LlmService`
-- frontend Angular réservé dans `frontend/`
 
 ## Démarrage
 

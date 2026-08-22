@@ -1,31 +1,54 @@
 package com.querypilot.service;
 
-import com.querypilot.dto.QueryResponse;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
+import com.querypilot.dto.QueryResponse;
 
 @Service
 public class NaturalLanguageQueryService {
 
-    private final JdbcTemplate jdbcTemplate;
+    private final LlmService llmService;
+    private final DatabaseSchemaService schemaService;
+    private final SqlValidationService sqlValidationService;
+    private final QueryExecutionService queryExecutionService;
 
-    public NaturalLanguageQueryService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public NaturalLanguageQueryService(
+            LlmService llmService,
+            DatabaseSchemaService schemaService,
+            SqlValidationService sqlValidationService,
+            QueryExecutionService queryExecutionService
+    ) {
+        this.llmService = llmService;
+        this.schemaService = schemaService;
+        this.sqlValidationService = sqlValidationService;
+        this.queryExecutionService = queryExecutionService;
     }
 
     public QueryResponse process(String question) {
-        String sql = """
-                SELECT
-                    current_database() AS database,
-                    current_user AS db_user,
-                    version() AS postgres_version
-                """;
 
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        String schema = schemaService.getSchema();
 
-        return new QueryResponse(question.trim(), sql.trim(), rows);
+        // LLM transforme la question en SQL
+        String sql = llmService.generateSql(
+                question,
+                schema
+        );
+
+        // on vérifie le SQL AVANT PostgreSQL
+        sqlValidationService.validate(sql);
+
+        //après validation, on peut exécuter
+        List<Map<String, Object>> rows =
+                queryExecutionService.execute(sql);
+
+        //Réponse envoyée à Angular
+        return new QueryResponse(
+                question.trim(),
+                sql,
+                rows
+        );
     }
 }
