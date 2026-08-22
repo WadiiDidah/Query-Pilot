@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: querypilot-postgres
+    environment:
+      POSTGRES_DB: querypilot
+      POSTGRES_USER: querypilot
+      POSTGRES_PASSWORD: querypilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - querypilot_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U querypilot -d querypilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  querypilot_pg:
