@@ -11,6 +11,10 @@ spring:
     password: ${DB_PASSWORD:querypilot}
     driver-class-name: org.postgresql.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+
   sql:
     init:
       mode: always

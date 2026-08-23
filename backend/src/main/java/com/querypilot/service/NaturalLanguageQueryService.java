@@ -14,37 +14,56 @@ public class NaturalLanguageQueryService {
     private final DatabaseSchemaService schemaService;
     private final SqlValidationService sqlValidationService;
     private final QueryExecutionService queryExecutionService;
+    private final QueryHistoryService queryHistoryService;
 
     public NaturalLanguageQueryService(
             LlmService llmService,
             DatabaseSchemaService schemaService,
             SqlValidationService sqlValidationService,
-            QueryExecutionService queryExecutionService
-    ) {
+            QueryExecutionService queryExecutionService,
+            QueryHistoryService queryHistoryService) {
+
         this.llmService = llmService;
         this.schemaService = schemaService;
         this.sqlValidationService = sqlValidationService;
         this.queryExecutionService = queryExecutionService;
+        this.queryHistoryService = queryHistoryService;
     }
 
     public QueryResponse process(String question) {
 
+        // début du chronométrage de la requête
+        long startTime = System.currentTimeMillis();
+
+        // récupération du schéma PostgreSQL envoyé au LLM
         String schema = schemaService.getSchema();
 
-        // LLM transforme la question en SQL
+        // transformation de la question en requête SQL
         String sql = llmService.generateSql(
                 question,
                 schema
         );
 
-        // on vérifie le SQL AVANT PostgreSQL
+        // vérification de la sécurité du SQL généré
         sqlValidationService.validate(sql);
 
-        //après validation, on peut exécuter
+        // exécution de la requête SQL validée
         List<Map<String, Object>> rows =
                 queryExecutionService.execute(sql);
 
-        //Réponse envoyée à Angular
+        // calcul du temps total de traitement
+        long executionTime =
+                System.currentTimeMillis() - startTime;
+
+        // enregistrement de la requête réussie dans l'historique
+        queryHistoryService.saveSuccess(
+                question.trim(),
+                sql,
+                rows.size(),
+                executionTime
+        );
+
+        // réponse renvoyée au frontend Angular
         return new QueryResponse(
                 question.trim(),
                 sql,
