@@ -1,12 +1,56 @@
-:host {
+::host {
   display: block;
   min-height: 100vh;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+  background: #071019;
+}
+
+.app-shell {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #071019;
+}
+
+app-sidebar {
+  flex: 0 0 260px;
+}
+
+.app-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 55px 55px 80px;
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    display: block;
+  }
+
+  app-sidebar {
+    display: contents;
+  }
+
+  .app-content {
+    width: 100%;
+  }
+
+  .container {
+    padding: 30px 20px 60px;
+  }
+}
+
+@media (max-width: 550px) {
+  .container {
+    padding: 24px 14px 45px;
+  }
 }
 
 * {

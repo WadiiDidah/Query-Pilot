@@ -7,16 +7,19 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 
 import { HistoryService } from '../../services/history.service';
 import { QueryHistory } from '../../models/query-history.model';
+
 
 @Component({
   selector: 'app-history',
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink
+    RouterLink,
+    SidebarComponent
   ],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
@@ -33,6 +36,9 @@ export class HistoryComponent implements OnInit {
   ngOnInit(): void {
     this.loadHistory();
   }
+
+  menuOpen = false;
+
 
   loadHistory(): void {
 
@@ -60,7 +66,7 @@ export class HistoryComponent implements OnInit {
     });
   }
 
-  
+
   refresh(): void {
     this.loadHistory();
   }

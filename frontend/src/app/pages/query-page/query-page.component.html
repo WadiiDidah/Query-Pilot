@@ -1,167 +1,8 @@
 <div class="app-shell">
 
-  <div class="mobile-overlay" *ngIf="menuOpen" (click)="closeMenu()">
-  </div>
-
-  <aside class="sidebar" [class.open]="menuOpen">
-
-    <div class="sidebar-header">
-
-      <div class="brand">
-
-        <div class="brand-logo">
-          <i class="fa-solid fa-terminal"></i>
-        </div>
-
-        <div class="brand-copy">
-          <strong>QueryPilot</strong>
-          <span>Natural Language → SQL</span>
-        </div>
-
-      </div>
-
-      <button class="sidebar-close" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-xmark"></i>
-
-      </button>
-
-    </div>
-
-    <button class="new-query" type="button" (click)="newQuery()">
-
-      <i class="fa-solid fa-plus"></i>
-      Nouvelle question
-
-    </button>
-
-    <nav class="navigation">
-
-      <span class="nav-section">
-        ESPACE DE TRAVAIL
-      </span>
-
-      <button class="nav-item active" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-message"></i>
-
-        <span>Assistant</span>
-
-        <span class="active-dot"></span>
-
-      </button>
-
-      <button class="nav-item" type="button" routerLink="/history" (click)="closeMenu()">
-
-        <i class="fa-solid fa-clock-rotate-left"></i>
-
-        <span>Historique</span>
-
-      </button>
-
-      <button class="nav-item" type="button" (click)="closeMenu()">
-
-        <i class="fa-regular fa-star"></i>
-
-        <span>Favoris</span>
-
-      </button>
-
-      <button class="nav-item" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-database"></i>
-
-        <span>Datasets</span>
-
-      </button>
-
-      <div class="divider"></div>
-
-      <span class="nav-section">
-        ADMINISTRATION
-      </span>
-
-      <button class="nav-item" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-chart-pie"></i>
-
-        <span>Tableau de bord</span>
-
-      </button>
-
-      <button class="nav-item" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-users"></i>
-
-        <span>Utilisateurs</span>
-
-      </button>
-
-      <button class="nav-item" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-shield-halved"></i>
-
-        <span>Rôles & permissions</span>
-
-      </button>
-
-      <button class="nav-item" type="button" (click)="closeMenu()">
-
-        <i class="fa-solid fa-gear"></i>
-
-        <span>Paramètres</span>
-
-      </button>
-
-    </nav>
-
-    <div class="sidebar-bottom">
-
-      <div class="profile-card">
-
-        <div class="avatar">
-          W
-        </div>
-
-        <div class="profile-copy">
-          <strong>Wadii</strong>
-          <span>Administrateur</span>
-        </div>
-
-        <i class="fa-solid fa-chevron-down profile-arrow"></i>
-
-      </div>
-
-    </div>
-
-  </aside>
-
+  <app-sidebar></app-sidebar>
 
   <section class="app-content">
-
-    <header class="mobile-header">
-
-      <div class="mobile-brand">
-
-        <div class="mobile-logo">
-          <i class="fa-solid fa-terminal"></i>
-        </div>
-
-        <div>
-          <strong>QueryPilot</strong>
-          <span>Natural Language → SQL</span>
-        </div>
-
-      </div>
-
-      <button class="menu-button" type="button" (click)="toggleMenu()">
-
-        <i class="fa-solid fa-bars"></i>
-
-      </button>
-
-    </header>
-
 
     <main class="main-content">
 
@@ -171,7 +12,7 @@
 
           <span class="hero-label">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
-            AI DATABASE ASSISTANT
+            ASSISTANT IA POUR BASE DE DONNÉES
           </span>
 
           <h1>
@@ -211,7 +52,6 @@
         </div>
 
       </header>
-
 
       <section class="workspace">
 
@@ -288,14 +128,14 @@
               <button type="button" (click)="useExample('Quelles sont les commandes les plus élevées ?')">
 
                 <i class="fa-solid fa-chart-line"></i>
-                Top commandes
+                Commandes les plus élevées
 
               </button>
 
               <button type="button" (click)="useExample('Quelles commandes dépassent 200 euros ?')">
 
                 <i class="fa-solid fa-arrow-trend-up"></i>
-                + de 200 €
+                Plus de 200 €
 
               </button>
 
@@ -326,7 +166,6 @@
           </button>
 
         </article>
-
 
         <article class="result-card">
 
@@ -372,7 +211,6 @@
 
           </div>
 
-
           <div class="loading-state" *ngIf="loading">
 
             <div class="big-spinner"></div>
@@ -387,7 +225,6 @@
             </p>
 
           </div>
-
 
           <div class="error-card" *ngIf="!loading && error">
 
@@ -408,7 +245,6 @@
             </div>
 
           </div>
-
 
           <ng-container *ngIf="!loading && !error && result as data">
 
@@ -454,7 +290,6 @@
 
             </section>
 
-
             <section class="results-section">
 
               <div class="section-header">
@@ -481,7 +316,6 @@
                 </span>
 
               </div>
-
 
               <div class="table-wrapper" *ngIf="data.rows.length > 0">
 
@@ -514,7 +348,6 @@
                 </table>
 
               </div>
-
 
               <div class="no-results" *ngIf="data.rows.length === 0">
 

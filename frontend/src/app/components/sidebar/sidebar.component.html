@@ -1,0 +1,198 @@
+<div
+  class="mobile-overlay"
+  *ngIf="menuOpen"
+  (click)="closeMenu()">
+</div>
+
+<aside
+  class="sidebar"
+  [class.open]="menuOpen">
+
+  <div class="sidebar-header">
+
+    <div class="brand">
+
+      <div class="brand-logo">
+        <i class="fa-solid fa-terminal"></i>
+      </div>
+
+      <div class="brand-copy">
+        <strong>QueryPilot</strong>
+        <span>Natural Language → SQL</span>
+      </div>
+
+    </div>
+
+    <button
+      class="sidebar-close"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+  </div>
+
+  <button
+    class="new-query"
+    type="button"
+    routerLink="/"
+    (click)="closeMenu()">
+
+    <i class="fa-solid fa-plus"></i>
+    Nouvelle question
+
+  </button>
+
+  <nav class="navigation">
+
+    <span class="nav-section">
+      ESPACE DE TRAVAIL
+    </span>
+
+    <a
+      class="nav-item"
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-message"></i>
+
+      <span>Assistant</span>
+
+    </a>
+
+    <a
+      class="nav-item"
+      routerLink="/history"
+      routerLinkActive="active"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-clock-rotate-left"></i>
+
+      <span>Historique</span>
+
+    </a>
+
+    <button
+      class="nav-item"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-regular fa-star"></i>
+
+      <span>Favoris</span>
+
+    </button>
+
+    <button
+      class="nav-item"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-database"></i>
+
+      <span>Datasets</span>
+
+    </button>
+
+    <div class="divider"></div>
+
+    <span class="nav-section">
+      ADMINISTRATION
+    </span>
+
+    <button
+      class="nav-item"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-chart-pie"></i>
+
+      <span>Tableau de bord</span>
+
+    </button>
+
+    <button
+      class="nav-item"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-users"></i>
+
+      <span>Utilisateurs</span>
+
+    </button>
+
+    <button
+      class="nav-item"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-shield-halved"></i>
+
+      <span>Rôles & permissions</span>
+
+    </button>
+
+    <button
+      class="nav-item"
+      type="button"
+      (click)="closeMenu()">
+
+      <i class="fa-solid fa-gear"></i>
+
+      <span>Paramètres</span>
+
+    </button>
+
+  </nav>
+
+  <div class="sidebar-bottom">
+
+    <div class="profile-card">
+
+      <div class="avatar">
+        W
+      </div>
+
+      <div class="profile-copy">
+        <strong>Wadii</strong>
+        <span>Administrateur</span>
+      </div>
+
+      <i class="fa-solid fa-chevron-down profile-arrow"></i>
+
+    </div>
+
+  </div>
+
+</aside>
+
+<header class="mobile-header">
+
+  <div class="mobile-brand">
+
+    <div class="mobile-logo">
+      <i class="fa-solid fa-terminal"></i>
+    </div>
+
+    <div>
+      <strong>QueryPilot</strong>
+      <span>Natural Language → SQL</span>
+    </div>
+
+  </div>
+
+  <button
+    class="menu-button"
+    type="button"
+    (click)="toggleMenu()">
+
+    <i class="fa-solid fa-bars"></i>
+
+  </button>
+
+</header>

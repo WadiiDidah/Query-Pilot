@@ -10,6 +10,8 @@ import { RouterLink } from '@angular/router';
 
 import { QueryService } from '../../services/query.service';
 import { QueryResponse } from '../../models/query.model';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
+
 
 @Component({
   selector: 'app-query-page',
@@ -17,7 +19,8 @@ import { QueryResponse } from '../../models/query.model';
   imports: [
     CommonModule,
     FormsModule,
-    RouterLink
+    RouterLink,
+    SidebarComponent
   ],
   templateUrl: './query-page.component.html',
   styleUrl: './query-page.component.css'
@@ -31,18 +34,6 @@ export class QueryPageComponent {
   loading = false;
   error = '';
   result?: QueryResponse;
-
-
-  menuOpen = false;
-
-  closeMenu(): void {
-    this.menuOpen = false;
-  }
-
-
-  toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
-  }
 
   submit(): void {
 

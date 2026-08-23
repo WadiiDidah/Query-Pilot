@@ -1,298 +1,282 @@
-<div class="history-page">
+<div class="app-shell">
 
-  <header class="navbar">
+  <app-sidebar></app-sidebar>
 
-    <a routerLink="/" class="brand">
+  <section class="app-content">
 
-      <div class="brand-icon">
-        Q
-      </div>
+    <main class="container">
 
-      <div class="brand-text">
-        <strong>QueryPilot</strong>
-        <span>AI Database Assistant</span>
-      </div>
-
-    </a>
-
-    <div class="navbar-actions">
-
-
-      <a routerLink="/" class="back-button">
-        ← Assistant
-      </a>
-
-    </div>
-
-  </header>
-
-
-  <main class="container">
-
-    <section class="page-heading">
-
-      <div>
-
-        <span class="eyebrow">
-          QUERY ACTIVITY
-        </span>
-
-        <h1>
-          Query history
-        </h1>
-
-        <p>
-          Retrouvez les requêtes générées et exécutées
-          par QueryPilot.
-        </p>
-
-      </div>
-
-      <button type="button" class="refresh-button" [disabled]="loading" (click)="refresh()">
-
-        <span class="refresh-icon" [class.spinning]="loading">
-          ↻
-        </span>
-
-        Actualiser
-
-      </button>
-
-    </section>
-
-
-    <section class="stats">
-
-      <article class="stat-card">
-
-        <span class="stat-label">
-          TOTAL QUERIES
-        </span>
-
-        <strong>
-          {{ history.length }}
-        </strong>
-
-        <span class="stat-description">
-          Requêtes enregistrées
-        </span>
-
-      </article>
-
-
-      <article class="stat-card">
-
-        <span class="stat-label">
-          SUCCESS
-        </span>
-
-        <strong class="success-number">
-          {{ history.length }}
-        </strong>
-
-        <span class="stat-description">
-          Exécutions réussies
-        </span>
-
-      </article>
-
-
-      <article class="stat-card">
-
-        <span class="stat-label">
-          LATEST ACTIVITY
-        </span>
-
-        <strong class="activity-value">
-          <ng-container *ngIf="history.length > 0; else noActivity">
-            {{ history[0].createdAt | date:'dd/MM HH:mm' }}
-          </ng-container>
-
-          <ng-template #noActivity>
-            —
-          </ng-template>
-        </strong>
-
-        <span class="stat-description">
-          Dernière requête
-        </span>
-
-      </article>
-
-    </section>
-
-
-    <section class="history-panel">
-
-      <div class="panel-header">
+      <section class="page-heading">
 
         <div>
-          <span class="panel-label">
-            RECENT ACTIVITY
+
+          <span class="eyebrow">
+            ACTIVITÉ DES REQUÊTES
           </span>
 
-          <h2>
-            Dernières requêtes
-          </h2>
+          <h1>
+            Historique des requêtes
+          </h1>
+
+          <p>
+            Retrouvez les requêtes générées et exécutées
+            par QueryPilot.
+          </p>
+
         </div>
 
-        <span class="query-count" *ngIf="!loading">
+        <button type="button" class="refresh-button" [disabled]="loading" (click)="refresh()">
 
-          {{ history.length }}
-          requête<span *ngIf="history.length !== 1">s</span>
+          <span class="refresh-icon" [class.spinning]="loading">
+            ↻
+          </span>
 
-        </span>
+          Actualiser
 
-      </div>
-
-
-      <div class="loading-state" *ngIf="loading">
-
-        <div class="spinner"></div>
-
-        <strong>
-          Chargement de l'historique
-        </strong>
-
-        <span>
-          Récupération des requêtes depuis QueryPilot...
-        </span>
-
-      </div>
-
-
-      <div class="error-state" *ngIf="!loading && error">
-
-        <div class="state-icon error-icon">
-          !
-        </div>
-
-        <strong>
-          Une erreur est survenue
-        </strong>
-
-        <span>
-          {{ error }}
-        </span>
-
-        <button type="button" (click)="refresh()">
-          Réessayer
         </button>
 
-      </div>
+      </section>
 
+      <section class="stats">
 
-      <div class="empty-state" *ngIf="!loading && !error && history.length === 0">
+        <article class="stat-card">
 
-        <div class="state-icon">
-          &lt;/&gt;
-        </div>
+          <span class="stat-label">
+            TOTAL DES REQUÊTES
+          </span>
 
-        <strong>
-          Aucune requête
-        </strong>
+          <strong>
+            {{ history.length }}
+          </strong>
 
-        <span>
-          Vos prochaines requêtes apparaîtront ici.
-        </span>
-
-        <a routerLink="/">
-          Poser une question
-        </a>
-
-      </div>
-
-
-      <div class="history-list" *ngIf="!loading && !error && history.length > 0">
-
-        <article class="query-item" *ngFor="let item of history; let i = index">
-
-          <div class="query-number">
-            {{ i + 1 }}
-          </div>
-
-
-          <div class="query-content">
-
-            <div class="query-header">
-
-              <div>
-
-                <div class="query-meta">
-
-                  <span class="status-badge" [class.blocked]="item.status === 'BLOCKED'"
-                    [class.error]="item.status === 'ERROR'">
-
-                    <span class="mini-dot"></span>
-
-                    {{ item.status }}
-
-                  </span>
-
-                  <span class="date">
-                    {{ item.createdAt | date:'dd MMM yyyy, HH:mm' }}
-                  </span>
-
-                </div>
-
-                <h3>
-                  {{ item.question }}
-                </h3>
-
-              </div>
-
-
-              <div class="metrics">
-
-                <div class="metric">
-                  <strong>
-                    {{ item.rowCount }}
-                  </strong>
-                  <span>
-                    rows
-                  </span>
-                </div>
-
-                <div class="metric">
-                  <strong>
-                    {{ item.executionTimeMs }}
-                  </strong>
-                  <span>
-                    ms
-                  </span>
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <div class="sql-block">
-
-              <div class="sql-header">
-
-                <span>
-                  GENERATED SQL
-                </span>
-
-                <span class="sql-type">
-                  PostgreSQL
-                </span>
-
-              </div>
-
-              <pre><code>{{ item.status === 'BLOCKED'? 'Requête bloquée pour des raisons de sécurité.': item.generatedSql }}</code></pre>
-
-            </div>
-
-          </div>
+          <span class="stat-description">
+            Requêtes enregistrées
+          </span>
 
         </article>
 
-      </div>
+        <article class="stat-card">
 
-    </section>
+          <span class="stat-label">
+            RÉUSSIES
+          </span>
 
-  </main>
+          <strong class="success-number">
+            {{ history.length }}
+          </strong>
+
+          <span class="stat-description">
+            Exécutions réussies
+          </span>
+
+        </article>
+
+        <article class="stat-card">
+
+          <span class="stat-label">
+            DERNIÈRE ACTIVITÉ
+          </span>
+
+          <strong class="activity-value">
+
+            <ng-container *ngIf="history.length > 0; else noActivity">
+
+              {{ history[0].createdAt | date:'dd/MM HH:mm' }}
+
+            </ng-container>
+
+            <ng-template #noActivity>
+              —
+            </ng-template>
+
+          </strong>
+
+          <span class="stat-description">
+            Dernière requête
+          </span>
+
+        </article>
+
+      </section>
+
+      <section class="history-panel">
+
+        <div class="panel-header">
+
+          <div>
+
+            <span class="panel-label">
+              ACTIVITÉ RÉCENTE
+            </span>
+
+            <h2>
+              Dernières requêtes
+            </h2>
+
+          </div>
+
+          <span class="query-count" *ngIf="!loading">
+
+            {{ history.length }}
+            requête<span *ngIf="history.length !== 1">s</span>
+
+          </span>
+
+        </div>
+
+        <div class="loading-state" *ngIf="loading">
+
+          <div class="spinner"></div>
+
+          <strong>
+            Chargement de l'historique
+          </strong>
+
+          <span>
+            Récupération des requêtes depuis QueryPilot...
+          </span>
+
+        </div>
+
+        <div class="error-state" *ngIf="!loading && error">
+
+          <div class="state-icon error-icon">
+            !
+          </div>
+
+          <strong>
+            Une erreur est survenue
+          </strong>
+
+          <span>
+            {{ error }}
+          </span>
+
+          <button type="button" (click)="refresh()">
+
+            Réessayer
+
+          </button>
+
+        </div>
+
+        <div class="empty-state" *ngIf="!loading && !error && history.length === 0">
+
+          <div class="state-icon">
+            &lt;/&gt;
+          </div>
+
+          <strong>
+            Aucune requête
+          </strong>
+
+          <span>
+            Vos prochaines requêtes apparaîtront ici.
+          </span>
+
+          <a routerLink="/">
+            Poser une question
+          </a>
+
+        </div>
+
+        <div class="history-list" *ngIf="!loading && !error && history.length > 0">
+
+          <article class="query-item" *ngFor="let item of history; let i = index">
+
+            <div class="query-number">
+              {{ i + 1 }}
+            </div>
+
+            <div class="query-content">
+
+              <div class="query-header">
+
+                <div>
+
+                  <div class="query-meta">
+
+                    <span class="status-badge" [class.blocked]="item.status === 'BLOCKED'"
+                      [class.error]="item.status === 'ERROR'">
+
+                      <span class="mini-dot"></span>
+
+                      {{ item.status }}
+
+                    </span>
+
+                    <span class="date">
+                      {{ item.createdAt | date:'dd MMM yyyy, HH:mm' }}
+                    </span>
+
+                  </div>
+
+                  <h3>
+                    {{ item.question }}
+                  </h3>
+
+                </div>
+
+                <div class="metrics">
+
+                  <div class="metric">
+
+                    <strong>
+                      {{ item.rowCount }}
+                    </strong>
+
+                    <span>
+                      lignes
+                    </span>
+
+                  </div>
+
+                  <div class="metric">
+
+                    <strong>
+                      {{ item.executionTimeMs }}
+                    </strong>
+
+                    <span>
+                      ms
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="sql-block">
+
+                <div class="sql-header">
+
+                  <span>
+                    SQL GÉNÉRÉ
+                  </span>
+
+                  <span class="sql-type">
+                    PostgreSQL
+                  </span>
+
+                </div>
+
+                <pre><code>{{ item.status === 'BLOCKED'
+                  ? 'Requête bloquée pour des raisons de sécurité.'
+                  : item.generatedSql }}</code></pre>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </section>
 
 </div>
