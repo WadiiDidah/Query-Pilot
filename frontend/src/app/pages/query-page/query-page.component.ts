@@ -6,6 +6,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { QueryService } from '../../services/query.service';
 import { QueryResponse } from '../../models/query.model';
@@ -15,7 +16,8 @@ import { QueryResponse } from '../../models/query.model';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './query-page.component.html',
   styleUrl: './query-page.component.css'
@@ -29,6 +31,18 @@ export class QueryPageComponent {
   loading = false;
   error = '';
   result?: QueryResponse;
+
+
+  menuOpen = false;
+
+  closeMenu(): void {
+    this.menuOpen = false;
+  }
+
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
 
   submit(): void {
 
@@ -54,15 +68,11 @@ export class QueryPageComponent {
         next: response => {
 
           if (response) {
-
             this.result = response;
             this.loading = false;
-
           } else {
-
             this.error =
               'Aucun résultat reçu.';
-
             this.loading = false;
           }
 
