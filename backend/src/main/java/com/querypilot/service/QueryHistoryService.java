@@ -36,6 +36,38 @@ public class QueryHistoryService {
         repository.save(history);
     }
 
+    public void saveBlocked(
+            String question,
+            String sql,
+            long executionTimeMs
+    ) {
+        QueryHistory history = new QueryHistory(
+                question,
+                sql,
+                "BLOCKED",
+                0,
+                executionTimeMs
+        );
+
+        repository.save(history);
+    }
+
+    public void saveError(
+            String question,
+            String sql,
+            long executionTimeMs
+    ) {
+        QueryHistory history = new QueryHistory(
+                question,
+                sql,
+                "ERROR",
+                0,
+                executionTimeMs
+        );
+
+        repository.save(history);
+    }
+
     public List<QueryHistory> findAll() {
         return repository.findAllByOrderByCreatedAtDesc();
     }

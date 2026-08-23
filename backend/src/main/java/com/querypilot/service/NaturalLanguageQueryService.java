@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.querypilot.dto.QueryResponse;
+import com.querypilot.exception.InvalidGeneratedSqlException;
 
 @Service
 public class NaturalLanguageQueryService {
@@ -30,32 +31,33 @@ public class NaturalLanguageQueryService {
         this.queryHistoryService = queryHistoryService;
     }
 
-    public QueryResponse process(String question) {
+   public QueryResponse process(String question) {
 
-        // début du chronométrage de la requête
-        long startTime = System.currentTimeMillis();
+    long startTime = System.currentTimeMillis();
 
-        // récupération du schéma PostgreSQL envoyé au LLM
+    String sql = null;
+
+    try {
+
         String schema = schemaService.getSchema();
 
-        // transformation de la question en requête SQL
-        String sql = llmService.generateSql(
+        // Génération SQL par le LLM
+        sql = llmService.generateSql(
                 question,
                 schema
         );
 
-        // vérification de la sécurité du SQL généré
+        // Validation sécurité
         sqlValidationService.validate(sql);
 
-        // exécution de la requête SQL validée
+        // Exécution PostgreSQL
         List<Map<String, Object>> rows =
                 queryExecutionService.execute(sql);
 
-        // calcul du temps total de traitement
         long executionTime =
                 System.currentTimeMillis() - startTime;
 
-        // enregistrement de la requête réussie dans l'historique
+        // Historique SUCCESS
         queryHistoryService.saveSuccess(
                 question.trim(),
                 sql,
@@ -63,11 +65,37 @@ public class NaturalLanguageQueryService {
                 executionTime
         );
 
-        // réponse renvoyée au frontend Angular
         return new QueryResponse(
                 question.trim(),
                 sql,
                 rows
         );
+
+    } catch (InvalidGeneratedSqlException exception) {
+
+        long executionTime =
+                System.currentTimeMillis() - startTime;
+
+        queryHistoryService.saveBlocked(
+                question.trim(),
+                sql != null ? sql : "",
+                executionTime
+        );
+
+        throw exception;
+
+    } catch (Exception exception) {
+
+        long executionTime =
+                System.currentTimeMillis() - startTime;
+
+        queryHistoryService.saveError(
+                question.trim(),
+                sql != null ? sql : "",
+                executionTime
+        );
+
+        throw exception;
     }
+}
 }
